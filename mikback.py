@@ -1,7 +1,8 @@
-import os
 import datetime
 import subprocess
 import json
+
+# Uncomment this area if you want UTC time. Default is local time stamps.
 # Get the current UTC date and time
 #current_datetime = datetime.datetime.utcnow()
 

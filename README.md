@@ -38,14 +38,14 @@ This is the file where you should define your devices. It is a json file and is 
 }
 ```
 
-BASE_PATH
+==BASE_PATH==
 
 The base path folder *MUST* exist otherwise the script will error. It will not make it for you.
 
 
 BACKUP
 
-If BACKUP is set to true, a backup will be created. Wether it is encrypted or not is up to BACKUP_PASSWORD
+If BACKUP is set to true, a backup will be created. Whether it is encrypted or not is up to how  BACKUP_PASSWORD is set.
 
 
 BACKUP_PASSWORD
