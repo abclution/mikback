@@ -9,7 +9,23 @@ This script has a global ssh option of `PubkeyAcceptedAlgoriths=ssh-rsa` which m
 
 # USAGE
 
-First step is to create or edit a `devices.json` file in the script's root folder.
+Create a admin-backup or similar user on each device.
+Generate a new public/private keypair or re-use your existing.
+Create or edit a `devices.json` file in the script's root folder.
+Run the script., python mikback.py
+Inspect your success.
+
+
+## Create a user on each Mikrotik device.
+
+Highly recommended to create a standalone user on each device with FULL access. This is the only way to ensure that the script can read/write to the device and create backups.
+It also follows best security practices. You may create multiple public/private keypairs and define each one individually in the `devices.json` file. 
+This is useful for re-use of the same authentication for multiple backup locations without compromising a central master user.
+
+- Create a new user on each device with FULL access.
+  - It requests a password and I suggest a long, random password that should be immediately forgotten as you should never use it.
+- Generate a new public/private keypair or re-use your existing. 
+- Upload your public key to the device using winbox, add the user and in system -> users -> SSH Keys -> Import SSH Key -> Type your new username and select the Key File from the device.
 
 ## devices.json
 
@@ -50,13 +66,3 @@ To disable encryption of the binary backup, `BACKUP_PASSWORD` must be set to nul
 `DEVICE_NAME`
 As long as all DEVICE_NAME are unique, the `BASE_PATH` can be the same for all devices.
 
-## Create a user on each Mikrotik device.
-
-Highly recommended to create a standalone user on each device with FULL access. This is the only way to ensure that the script can read/write to the device and create backups.
-It also follows best security practices. You may create multiple public/private keypairs and define each one individually in the `devices.json` file. 
-This is useful for re-use of the same authentication for multiple backup locations without compromising a central master user.
-
-- Create a new user on each device with FULL access.
-  - It requests a password and I suggest a long, random password that should be immediately forgotten as you should never use it.
-- Generate a new public/private keypair or re-use your existing. 
-- Upload your public key to the device using winbox, add the user and in system -> users -> SSH Keys -> Import SSH Key -> Type your new username and select the Key File from the device.
