@@ -12,7 +12,7 @@ This script has a global ssh option of `PubkeyAcceptedAlgoriths=ssh-rsa` which m
 Create a admin-backup or similar user on each device.
 Generate a new public/private keypair or re-use your existing.
 Create or edit a `devices.json` file in the script's root folder.
-Run the script., python mikback.py
+Run the script, `python mikback.py`
 Inspect your success.
 
 
