@@ -2,9 +2,8 @@
 
 Simple backup script for multiple mikrotik devices written in Python\*
 
-\*Please make sure ssh and scp from your shell is availiable in your path.
-
-Tested and written on Debian 12
+* Please make sure ssh and scp from your shell is availiable in your path.
+* Tested and written on Debian 12
 
 
 
@@ -38,22 +37,22 @@ This is the file where you should define your devices. It is a json file and is 
 }
 ```
 
-==BASE_PATH==
+`BASE_PATH`
 
 The base path folder *MUST* exist otherwise the script will error. It will not make it for you.
 
 
-BACKUP
+`BACKUP`
 
 If BACKUP is set to true, a backup will be created. Whether it is encrypted or not is up to how  BACKUP_PASSWORD is set.
 
 
-BACKUP_PASSWORD
+`BACKUP_PASSWORD`
 
 To disable encryption of the binary backup, BACKUP_PASSWORD must be set to null ex. “BACKUP_PASSWORD”: null
 
 
-DEVICE_NAME
+`DEVICE_NAME`
 
 As long as all DEVICE_NAME are unique, the BASE_PATH can be the same for all devices.
 
