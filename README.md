@@ -56,7 +56,7 @@ The base path folder *MUST* exist otherwise the script will error. It will not m
 
 
 `BACKUP`
-If BACKUP is set to true, a backup will be created. Whether it is encrypted or not is up to how `BACKUP_PASSWORD` is set.
+If `BACKUP` is set to true, a backup will be created. Whether it is encrypted or not is up to how `BACKUP_PASSWORD` is set.
 
 
 `BACKUP_PASSWORD`
@@ -64,5 +64,5 @@ To disable encryption of the binary backup, `BACKUP_PASSWORD` must be set to nul
 
 
 `DEVICE_NAME`
-As long as all DEVICE_NAME are unique, the `BASE_PATH` can be the same for all devices.
+As long as all `DEVICE_NAME` are unique, the `BASE_PATH` can be the same for all devices.
 
