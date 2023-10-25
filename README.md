@@ -23,8 +23,8 @@ It also follows best security practices. You may create multiple public/private 
 This is useful for re-use of the same authentication for multiple backup locations without compromising a central master user.
 
 - Create a new user on each device with FULL access.
-  - It requests a password and I suggest a long, random password that should be immediately forgotten as you should never use it.
-- Generate a new public/private keypair or re-use your existing. 
+  - Winbox on user creation requests a password and I suggest a long, random password that should be immediately forgotten as you should never use it.
+- Generate a new public/private keypair on your local machine, or re-use your existing keypair. 
 - Upload your public key to the device using winbox, add the user and in system -> users -> SSH Keys -> Import SSH Key -> Type your new username and select the Key File from the device.
 
 ## devices.json
