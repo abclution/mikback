@@ -1,0 +1,31 @@
+{
+    "device1": {
+        "DEVICE_NAME": "Mikrotik-A",
+        "DEVICE_IP": "192.168.22.1",
+        "DEVICE_PORT": 5522,
+        "DEVICE_USERNAME": "admin-ssh",
+        "DEVICE_SSHKEY": "~/.ssh/id_rsa",
+        "BASE_PATH": "./configs/",
+        "EXPORT": false,
+        "EXPORT_VERBOSE": true,
+        "EXPORT_TERSE": false,
+        "EXPORT_COMPACT": false,
+        "BACKUP": true,
+        "BACKUP_PASSWORD": "sdfggdf"
+
+    },
+    "device2": {
+        "DEVICE_NAME": "Another-Device",
+        "DEVICE_IP": "192.168.22.1",
+        "DEVICE_PORT": 5522,
+        "DEVICE_USERNAME": "admin-ssh",
+        "DEVICE_SSHKEY": "~/.ssh/id_rsa",
+        "BASE_PATH": "./configs/",
+        "EXPORT": false,
+        "EXPORT_VERBOSE": false,
+        "EXPORT_TERSE": false,
+        "EXPORT_COMPACT": true,
+        "BACKUP": true,
+        "BACKUP_PASSWORD": null
+    }
+}
