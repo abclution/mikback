@@ -41,7 +41,7 @@ This is the file where you should define your devices. It is a json file and is 
         "DEVICE_SSHKEY": "~/.ssh/id_rsa", // The private key used for login, the default will be your user default
         "DEVICE_ROS7": true,              // Enable/disable RouterOS 7.x export type (show-sensitive). RouterOS 6.x is the default.
         "SSH_OPTIONS": "-oPubkeyAcceptedAlgorithms=+ssh-rsa", // Needed for most Mikrotik devices
-        "BASE_PATH": "./configs/",        // Local destination root for exports and backups.
+        "BASE_PATH": "./backups/",        // Local destination root for exports and backups.
         "EXPORT": true,                  // Enable/disable Mikrotik config exports. Must enable at least one of VERBOSE/COMPACT types as well.
         "EXPORT_TERSE": true,            // Enable Terse export for both VERBOSE and COMPACT. Terse is highly recommended.
         "EXPORT_VERBOSE": true,          // Verbose export, contains all config values.
