@@ -34,14 +34,14 @@ def get_mikrotik_export(device_name, file_name, export_type=""):
     with open(f'{device_settings["BASE_PATH"]}/{file_name}', "w") as output_file:
         try:
             subprocess.run(sh_command, shell=True, stdout=output_file, check=True)
-            print(f"Command executed and output saved to {file_name}")
+            print(f"Export saved to {device_settings['BASE_PATH']}/{file_name}")
         except subprocess.CalledProcessError as e:
             print(f"Command failed with error: {e}")
 
 
 def get_mikrotik_backup(device_name, file_name, backup_password=None):
-    """Creates a backup of the device's configuration and saves it to a file on the
-    device. Then uses SCP to copy the file to the local machine. And finally
+    """Creates a backup of the device's configuration and saves it to a file on
+    the device. Then uses SCP to copy the file to the local machine. Finally
     uses SSH again and removes the file from the device."""
 
     device_settings = devices.get(device_name)
@@ -63,13 +63,13 @@ def get_mikrotik_backup(device_name, file_name, backup_password=None):
 
     try:
         subprocess.run(sh_command, shell=True, stdout=subprocess.DEVNULL, check=True)
-        print(f"Created {file_name} on device {device_name}\n")
+        print(f"Created {file_name} on {device_name}\n")
 
         subprocess.run(scp_command, shell=True, stdout=None, check=True)
-        print(f"Backup retrieved from device {device_name}.\n")
+        print(f"Backup retrieved from {device_name}, and saved to: {device_settings['BASE_PATH']}/{file_name} \n")
 
         subprocess.run(clean_command, shell=True, stdout=None, check=True)
-        print(f"{file_name} removed from device {device_name}.")
+        print(f"{file_name} removed from {device_name}.")
 
     except subprocess.CalledProcessError as e:
         print(f"Command failed with error: {e}")
@@ -83,24 +83,20 @@ for device in devices:
             devices[device]["BACKUP_PASSWORD"],
         )
 
-    if devices[device]["EXPORT"] == True:
-        get_mikrotik_export(device, f"{devices[device]['DEVICE_NAME']}_{DATESTAMP}.rsc")
+    if devices[device]["EXPORT"] is True:
 
-    if devices[device]["EXPORT_COMPACT"] == True:
-        get_mikrotik_export(
-            device,
-            f"{devices[device]['DEVICE_NAME']}_{DATESTAMP}-COMPACT.rsc",
-            "compact",
-        )
+        if devices[device]["EXPORT_TERSE"] is True:
 
-    if devices[device]["EXPORT_VERBOSE"] == True:
-        get_mikrotik_export(
-            device,
-            f"{devices[device]['DEVICE_NAME']}_{DATESTAMP}-VERBOSE.rsc",
-            "verbose",
-        )
+            if devices[device]["EXPORT_COMPACT"] is True:
+                get_mikrotik_export(device, f"{devices[device]['DEVICE_NAME']}_{DATESTAMP}-COMPACT_TERSE.rsc","compact terse",)
 
-    if devices[device]["EXPORT_TERSE"] == True:
-        get_mikrotik_export(
-            device, f"{devices[device]['DEVICE_NAME']}_{DATESTAMP}-TERSE.rsc", "terse"
-        )
+            if devices[device]["EXPORT_VERBOSE"] is True:
+                get_mikrotik_export(device, f"{devices[device]['DEVICE_NAME']}_{DATESTAMP}-VERBOSE_TERSE.rsc","verbose terse",)
+        else:
+
+            if devices[device]["EXPORT_COMPACT"] is True:
+                get_mikrotik_export(device, f"{devices[device]['DEVICE_NAME']}_{DATESTAMP}-COMPACT.rsc","compact",)
+
+            if devices[device]["EXPORT_VERBOSE"] is True:
+                get_mikrotik_export(device, f"{devices[device]['DEVICE_NAME']}_{DATESTAMP}-VERBOSE.rsc","verbose",)
+
