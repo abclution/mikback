@@ -34,7 +34,7 @@ This is the file where you should define your devices. It is a json file and is 
 ```json
 {
     "device1": {                          // This is the device definition, it can be any unique name.
-        "DEVICE_NAME": "Mikrotik-A",      // The device name itself, used in naming the export and backup files. Also should be unique otherwise your files will overwrite each other.
+        "DEVICE_NAME": "Mikrotik-A",      // Used in naming the export and backup files. NO SPACES OR WHITESPACE, also name should be unique otherwise your files will overwrite each other.
         "DEVICE_IP": "192.168.22.1",      // IP of the device
         "DEVICE_PORT": 5522,              // SSH Port of the device
         "DEVICE_USERNAME": "admin-ssh",   // Username (you should create a new user with FULL access on the device)
