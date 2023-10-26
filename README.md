@@ -63,8 +63,9 @@ If `BACKUP` is set to true, a backup will be created. Whether it is encrypted or
 
 `BACKUP_PASSWORD`
 
-To disable encryption of the binary backup, `BACKUP_PASSWORD` must be set to null ex. `“BACKUP_PASSWORD”: null`
+To disable encryption of the binary backup, `BACKUP_PASSWORD` must be set to null, no quotations.
 
+ex. `“BACKUP_PASSWORD”: null` or can be set to an empty string `“BACKUP_PASSWORD”: ""`
 
 `DEVICE_NAME`
 
