@@ -1,6 +1,6 @@
-# mykrotik-backup
+# mikback - Simple, multiple Mikrotik device backup system
 
-Simple backup script for multiple mikrotik devices written in Python\*
+Simple backup script for multiple Mikrotik devices written in Python\*
 
 * Please make sure ssh and scp from your shell is availiable in your path.
 * Tested and written on Debian 12
