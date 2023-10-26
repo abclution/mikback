@@ -28,7 +28,10 @@ def get_mikrotik_export(device_name, file_name, export_type=""):
         print(f"Device '{device_name}' not found in the configuration file.")
         return
 
-    sh_command = f'ssh -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/export {export_type}"'
+    if {device_settings["DEVICE_ROS7"]} is True:
+        sh_command = f'ssh -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/export {export_type} show-sensitive"'
+    else:
+        sh_command = f'ssh -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/export {export_type}"'
 
     # Run the SSH command and capture the output to a file
     with open(f'{device_settings["BASE_PATH"]}/{file_name}', "w") as output_file:
