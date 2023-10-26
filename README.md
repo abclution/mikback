@@ -8,8 +8,9 @@ Simple backup script for multiple mikrotik devices written in Python\*
 
 # USAGE
 
-* Create a admin-backup or similar user on each device.
-* Generate a new public/private keypair or re-use your existing.
+* Generate a new public/private keypair or re-use your existing to use on the next step.
+* Create a "admin-backup" or similar user on each device.
+* Upload your public key to the device using winbox, and assign it to your new user.
 * Create or edit a `devices.json` file in the script's root folder.
 * Run the script, `python mikback.py`
 * Inspect your success.
@@ -40,7 +41,7 @@ This is the file where you should define your devices. It is a json file and is 
         "DEVICE_SSHKEY": "~/.ssh/id_rsa", // The private key used for login, the default will be your user default
         "SSH_OPTIONS": "-oPubkeyAcceptedAlgorithms=+ssh-rsa", // Needed for most Mikrotik devices
         "BASE_PATH": "./configs/",        // Local destination root for exports and backups.
-        "EXPORT": true,                  // Enable Mikrotik config exports. Must enable at least one of VERBOSE/COMPACT types as well.
+        "EXPORT": true,                  // Enable/disable Mikrotik config exports. Must enable at least one of VERBOSE/COMPACT types as well.
         "EXPORT_TERSE": true,            // Enable Terse export for both VERBOSE and COMPACT. Terse is highly recommended.
         "EXPORT_VERBOSE": true,          // Verbose export, contains all config values.
         "EXPORT_COMPACT": true,          // Compact export, contains only values changed from default settings.
