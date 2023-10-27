@@ -2,12 +2,15 @@
 
 Simple backup script for multiple Mikrotik devices written in Python\*
 
-* Please make sure ssh and scp from your shell is availiable in your path.
+* Please make sure ssh and scp (optionally sshpass) from your shell is available in your path.
 * Tested and written on Debian 12
 
 
 # USAGE
+* NEW: Password based authentication is now supported. You must have sshpass installed and in your path.
+* Password based authentication works by reading the password from the devices.json file and setting it temporarily as an environment variable. It is as secure as password based auth can get. 
 
+## SSH Keypair Usage (Reccomended!)
 * Generate a new public/private keypair or re-use your existing to use on the next step.
 * Create a "admin-backup" or similar user on each device.
 * Upload your public key to the device using winbox, and assign it to your new user.
@@ -38,7 +41,7 @@ This is the file where you should define your devices. It is a json file and is 
         "DEVICE_IP": "192.168.22.1",       // IP of the device
         "DEVICE_PORT": 5522,               // SSH Port of the device
         "DEVICE_USERNAME": "admin-ssh",    // Username (you should create a new user with FULL access on the device)
-        "DEVICE_PASSWORD": "ajsdfasdfasdf",// Password entered here will force password authentication. Leave null or "" to use keypair authenticaion.
+        "DEVICE_PASSWORD": "ajsdfasdfasdf",// Password entered here will FORCE password authentication. Leave null or "" to use keypair authenticaion.
         "DEVICE_ROS7": true,               // Enable/disable RouterOS 7.x export type (show-sensitive). RouterOS 6.x is the default.
         "SSH_OPTIONS": "-oPubkeyAcceptedAlgorithms=+ssh-rsa", // Needed for most Mikrotik devices
         "BASE_PATH": "./backups/",         // Local destination root for exports and backups.
