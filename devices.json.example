@@ -1,9 +1,10 @@
 {
-    "device1": {
+    "device1-keypair-auth": {
         "DEVICE_NAME": "Mikrotik-A",
         "DEVICE_IP": "192.168.22.1",
         "DEVICE_PORT": 5522,
         "DEVICE_USERNAME": "admin-backup",
+        "DEVICE_PASSWORD": "", 
         "DEVICE_SSHKEY": "~/.ssh/id_rsa",
         "DEVICE_ROS7": false,
         "SSH_OPTIONS": "-oPubkeyAcceptedAlgorithms=+ssh-rsa",
@@ -16,11 +17,12 @@
         "BACKUP_PASSWORD": "backuppassword"
 
     },
-    "device2": {
+    "device2-password-auth": {
         "DEVICE_NAME": "Another-Mikrotik-Device",
         "DEVICE_IP": "192.168.22.22",
         "DEVICE_PORT": 22,
         "DEVICE_USERNAME": "backup-user",
+        "DEVICE_PASSWORD": "Astrongdeviceepassword", 
         "DEVICE_ROS7": true,
         "SSH_OPTIONS": "-oPubkeyAcceptedAlgorithms=+ssh-rsa",
         "DEVICE_SSHKEY": "~/.ssh/id_rsa",

@@ -33,21 +33,21 @@ This is the file where you should define your devices. It is a json file and is 
 
 ```json
 {
-    "device1": {                          // This is the device definition, it can be any unique name.
-        "DEVICE_NAME": "Mikrotik-A",      // Used in naming the export and backup files. NO SPACES OR WHITESPACE, also name should be unique otherwise your files will overwrite each other.
-        "DEVICE_IP": "192.168.22.1",      // IP of the device
-        "DEVICE_PORT": 5522,              // SSH Port of the device
-        "DEVICE_USERNAME": "admin-ssh",   // Username (you should create a new user with FULL access on the device)
-        "DEVICE_SSHKEY": "~/.ssh/id_rsa", // The private key used for login, the default will be your user default
-        "DEVICE_ROS7": true,              // Enable/disable RouterOS 7.x export type (show-sensitive). RouterOS 6.x is the default.
+    "device1": {                           // This is the device definition, it can be any unique name.
+        "DEVICE_NAME": "Mikrotik-A",       // Used in naming the export and backup files. NO SPACES OR WHITESPACE, also name should be unique otherwise your files will overwrite each other if you have the same name and base path between them.
+        "DEVICE_IP": "192.168.22.1",       // IP of the device
+        "DEVICE_PORT": 5522,               // SSH Port of the device
+        "DEVICE_USERNAME": "admin-ssh",    // Username (you should create a new user with FULL access on the device)
+        "DEVICE_PASSWORD": "ajsdfasdfasdf",// Password entered here will force password authentication. Leave null or "" to use keypair authenticaion.
+        "DEVICE_ROS7": true,               // Enable/disable RouterOS 7.x export type (show-sensitive). RouterOS 6.x is the default.
         "SSH_OPTIONS": "-oPubkeyAcceptedAlgorithms=+ssh-rsa", // Needed for most Mikrotik devices
-        "BASE_PATH": "./backups/",        // Local destination root for exports and backups.
-        "EXPORT": true,                  // Enable/disable Mikrotik config exports. Must enable at least one of VERBOSE/COMPACT types as well.
-        "EXPORT_TERSE": true,            // Enable Terse export for both VERBOSE and COMPACT. Terse is highly recommended.
-        "EXPORT_VERBOSE": true,          // Verbose export, contains all config values.
-        "EXPORT_COMPACT": true,          // Compact export, contains only values changed from default settings.
-        "BACKUP": true,                   // Must be true to create and download a Mikrotik binary .backup file
-        "BACKUP_PASSWORD": "sdfggdf"      // Password used to encrypt the binary backup, set to null (no quotations) or "" (double quotations) to disable encryption.
+        "BASE_PATH": "./backups/",         // Local destination root for exports and backups.
+        "EXPORT": true,                    // Enable/disable Mikrotik config exports. Must enable at least one of VERBOSE/COMPACT types as well.
+        "EXPORT_TERSE": true,              // Enable Terse export for both VERBOSE and COMPACT. Terse is highly recommended.
+        "EXPORT_VERBOSE": true,            // Verbose export, contains all config values.
+        "EXPORT_COMPACT": true,            // Compact export, contains only values changed from default settings.
+        "BACKUP": true,                    // Must be true to create and download a Mikrotik binary .backup file
+        "BACKUP_PASSWORD": "sdfggdf"       // Password used to encrypt the binary backup, set to null (no quotations) or "" (double quotations) to disable encryption.
 
     }
 }
@@ -88,7 +88,6 @@ For even older versions of Mikrotik, you may need this instead: `"-o HostKeyAlgo
 Due to this behavior, the script requires defining the export type for each device in the `devices.json` file. You can choose multiple export types.
 
 * /export terse - This is actually a switch that can be applied to any of the export types. Terse is highly recommended as it produces every configuration line on a separate line instead of splitting long lines up into multiple lines.
-
 * /export compact - Starting from v5.12 compact export was added. It allows to export only part of configuration that is not default RouterOS config.
 * /export verbose - Contains all values.
 

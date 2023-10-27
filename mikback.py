@@ -1,4 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
+
+import os
 import datetime
 import subprocess
 import json
@@ -28,16 +30,30 @@ def get_mikrotik_export(device_name, file_name, export_type=""):
         print(f"Device '{device_name}' not found in the configuration file.")
         return
 
-    if {device_settings["DEVICE_ROS7"]} is True:
-        sh_command = f'ssh -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/export {export_type} show-sensitive"'
+    if device_settings["DEVICE_ROS7"] is True:
+        if device_settings["DEVICE_PASSWORD"] is None or device_settings["DEVICE_PASSWORD"] == "":
+            sh_command = f'ssh -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/export {export_type} show-sensitive"'
+        else: # Make command for password based login.
+            sh_command = f'sshpass -e ssh {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/export {export_type} show-sensitive"'
+
     else:
-        sh_command = f'ssh -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/export {export_type}"'
+        if device_settings["DEVICE_PASSWORD"] is None or device_settings["DEVICE_PASSWORD"] == "":
+            sh_command = f'ssh -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/export {export_type}"'
+        else:  # Make command for password based login.
+            sh_command = f'sshpass -e ssh {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/export {export_type}"'
+
 
     # Run the SSH command and capture the output to a file
     with open(f'{device_settings["BASE_PATH"]}/{file_name}', "w") as output_file:
         try:
+            # Set the environment variable
+            os.environ["SSHPASS"] = f'{device_settings["DEVICE_PASSWORD"]}'
             subprocess.run(sh_command, shell=True, stdout=output_file, check=True)
             print(f"Export saved to {device_settings['BASE_PATH']}/{file_name}")
+
+            if "SSHPASS" in os.environ:
+                os.environ.pop("SSHPASS")
+
         except subprocess.CalledProcessError as e:
             print(f"Command failed with error: {e}")
 
@@ -54,17 +70,35 @@ def get_mikrotik_backup(device_name, file_name, backup_password=None):
         return
 
     if backup_password is None or backup_password == "":
-        sh_command = f'ssh -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/system backup save dont-encrypt=yes name={file_name}"'
+        if device_settings["DEVICE_PASSWORD"] is None or device_settings["DEVICE_PASSWORD"] == "":
+            sh_command = f'ssh -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/system backup save dont-encrypt=yes name={file_name}"'
+
+        else:  # Make command for password based login.
+            sh_command = f'sshpass -e ssh {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/system backup save dont-encrypt=yes name={file_name}"'
+
     else:
-        sh_command = f'ssh -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/system backup save encryption=aes-sha256 password={backup_password} name={file_name}"'
+        if device_settings["DEVICE_PASSWORD"] is None or device_settings["DEVICE_PASSWORD"] == "":
+            sh_command = f'ssh -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/system backup save encryption=aes-sha256 password={backup_password} name={file_name}"'
+        else:  # Make command for password based login.
+            sh_command = f'sshpass -e ssh {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/system backup save encryption=aes-sha256 password={backup_password} name={file_name}"'
 
-    # Retrieve binary backup
-    scp_command = f'scp -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -P {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]}:/{file_name} {device_settings["BASE_PATH"]}'
 
-    # Cleanup the backup file
-    clean_command = f'ssh -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/file remove {file_name}"'
+    if device_settings["DEVICE_PASSWORD"] is None or device_settings["DEVICE_PASSWORD"] == "":
+        # Retrieve binary backup command
+        scp_command = f'scp -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -P {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]}:/{file_name} {device_settings["BASE_PATH"]}'
+
+        # Cleanup the backup file command
+        clean_command = f'ssh -i {device_settings["DEVICE_SSHKEY"]} {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/file remove {file_name}"'
+
+    else:  # Make command for password based login.
+        scp_command = f'sshpass -e scp {device_settings["SSH_OPTIONS"]} -P {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]}:/{file_name} {device_settings["BASE_PATH"]}'
+        clean_command = f'sshpass -e ssh {device_settings["SSH_OPTIONS"]} -p {device_settings["DEVICE_PORT"]} {device_settings["DEVICE_USERNAME"]}@{device_settings["DEVICE_IP"]} "/file remove {file_name}"'
 
     try:
+
+        # Set the environment variable
+        os.environ["SSHPASS"] = f'{device_settings["DEVICE_PASSWORD"]}'
+
         subprocess.run(sh_command, shell=True, stdout=subprocess.DEVNULL, check=True)
         print(f"Created {file_name} on {device_name}\n")
 
@@ -74,17 +108,16 @@ def get_mikrotik_backup(device_name, file_name, backup_password=None):
         subprocess.run(clean_command, shell=True, stdout=None, check=True)
         print(f"{file_name} removed from {device_name}.")
 
+        if "SSHPASS" in os.environ:
+            os.environ.pop("SSHPASS")
+
     except subprocess.CalledProcessError as e:
         print(f"Command failed with error: {e}")
 
 
 for device in devices:
-    if devices[device]["BACKUP"] == True:
-        get_mikrotik_backup(
-            device,
-            f"{devices[device]['DEVICE_NAME']}_{DATESTAMP}.backup",
-            devices[device]["BACKUP_PASSWORD"],
-        )
+    if devices[device]["BACKUP"] is True:
+        get_mikrotik_backup(device, f"{devices[device]['DEVICE_NAME']}_{DATESTAMP}.backup", devices[device]["BACKUP_PASSWORD"], )
 
     if devices[device]["EXPORT"] is True:
 
@@ -102,4 +135,3 @@ for device in devices:
 
             if devices[device]["EXPORT_VERBOSE"] is True:
                 get_mikrotik_export(device, f"{devices[device]['DEVICE_NAME']}_{DATESTAMP}-VERBOSE.rsc","verbose",)
-
